@@ -45,7 +45,7 @@ function App() {
 
   const fetchResults = async () => {
     try {
-      const response = await axios.get('https://deploy-backend-hazel.vercel.app/api/results');
+      const response = await axios.get('https://deploy-backend-three.vercel.app/api/results');
       setResults(response.data);
       setLoading(false);
     } catch (error) {
