@@ -49,4 +49,4 @@ app.use("/",(req,res) =>{
     res.send("server is running");
 })
 
-app.listen(port, console.log("server is running on port 3000"));
+app.listen(port, console.log(`server is running on port ${port}`));
