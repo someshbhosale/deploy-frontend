@@ -44,9 +44,9 @@ const app = express();
 // });
 
 // module.exports = app;
-
+const port = process.env.PORT || 3000;
 app.use("/",(req,res) =>{
     res.send("server is running");
 })
 
-app.listen(5000, console.log("server is running on port 5000"));
+app.listen(port, console.log("server is running on port 3000"));
