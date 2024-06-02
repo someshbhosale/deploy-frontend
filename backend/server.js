@@ -6,7 +6,7 @@ const app = express();
 
 app.use(cors());
 
-const url = 'https://results.eci.gov.in/AcResultGenDecNew2023/partywiseresult-S12.htm';  // Replace with the actual results page URL
+const url = 'https://results.eci.gov.in/AcResultGen2ndJune2024/partywiseresult-S02.htm';  // Replace with the actual results page URL
 
 async function fetchElectionResults() {
   try {
