@@ -9,7 +9,7 @@ const ElectionResults = () => {
 
   const fetchResults = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/results');
+      const response = await axios.get('https://deploy-backend-three.vercel.app/api/results');
       setResults(response.data);
       setLoading(false);
     } catch (error) {
