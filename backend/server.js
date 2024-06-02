@@ -14,21 +14,47 @@ async function fetchElectionResults() {
     const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
-    // Adjust the selector based on the actual structure of the ECI results page
-    const table = $('table');  // Example class, replace with actual class name
+    const table = $('table');  // Use the correct selector for the table
     const rows = table.find('tr');
 
     const results = [];
+    let totalRow = {};
+
     rows.each((index, row) => {
-      if (index === 0) return;  // Skip header row
-      const cols = $(row).find('td');
-      results.push({
-        party: $(cols[0]).text().trim(),
-        won: $(cols[1]).text().trim(),
-        leading: $(cols[2]).text().trim(),
-        total: $(cols[3]).text().trim(),
-      });
+      const isTotalRow = $(row).closest('tfoot').length > 0;
+      if (index === 0 && !isTotalRow) return;  // Skip header row unless it's a total row
+
+      if (isTotalRow) {
+        const cols = $(row).find('th');
+        totalRow = {
+          party: 'Total',
+          won: $(cols[1]).text().trim(),
+          leading: $(cols[2]).text().trim(),
+          total: $(cols[3]).text().trim(),
+        };
+      } else {
+        const cols = $(row).find('td');
+        const party = $(cols[0]).text().trim();
+        const won = $(cols[1]).text().trim();
+        const leading = $(cols[2]).text().trim();
+        const total = $(cols[3]).text().trim();
+
+        // Only add rows with valid data
+        if (party && won && leading && total) {
+          results.push({
+            party,
+            won,
+            leading,
+            total,
+          });
+        }
+      }
     });
+
+    // Add the total row to the results if it exists
+    if (Object.keys(totalRow).length) {
+      results.push(totalRow);
+    }
 
     console.log('Fetched results:', results);
     return results;
@@ -43,11 +69,11 @@ app.get('/api/results', async (req, res) => {
   res.json(results);
 });
 
-
 const port = process.env.PORT || 3000;
-app.use("/",(req,res) =>{
-    res.send("server is running");
-})
+app.get("/", (req, res) => {
+  res.send("Server is running");
+});
 
-app.listen(port, console.log(`server is running on port ${port}`));
-
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
