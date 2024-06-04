@@ -21,7 +21,7 @@ const ElectionResults = () => {
 
   useEffect(() => {
     fetchResults();
-    const interval = setInterval(fetchResults, 60000); // Fetch every minute
+    const interval = setInterval(fetchResults, 6000); // Fetch every minute
     return () => clearInterval(interval);
   }, []);
 
